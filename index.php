@@ -67,6 +67,5 @@ switch ($_GET['action'])
         }	
 
 }
-
 default:
 listPosts();
