@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 require ('controlers/controlerPublic.php');
 require ('controlers/controlerBack.php');
 
@@ -12,6 +12,7 @@ switch ($_GET['action'])
 {   
     case "listPosts":
         listPosts();
+        break;
         
 	case "post" :
 		if (isset($_GET['id']) && $_GET['id'] > 0) 
@@ -23,11 +24,9 @@ switch ($_GET['action'])
             echo 'Erreur : aucun identifiant de billet envoyé';
         }
 		break;
-	default: 
-		page404();
 
 	case "addArticle" :  
-	if (
+	   if (
             !empty($_POST['author']) && 
             !empty($_POST['content']) && 
             !empty($_POST['title'])
@@ -39,9 +38,10 @@ switch ($_GET['action'])
         {
             echo 'Erreur: tous les champs ne sont pas remplis .';
         }  
+        break;
 
     case "addComment":
-    if  (
+        if  (
             !empty($_GET['id']) && !empty($_POST['author']) && !empty($_POST['comment'])
         )
         {
@@ -50,16 +50,41 @@ switch ($_GET['action'])
         else
         {
             echo 'Erreur , tous les champs ne sont pas remplis .';
-        }     
+        }  
+        break;
+
+    case "connexion":
+        connexionForm();  
+        break; 
+
+    case "traitementConnexion":
+        if (
+            !empty($_POST['mailconnect'])&&
+            !empty($_POST['mdpconnect'])
+        )
+        {
+            traitementConnexion($_POST['mailconnect'],$_POST['mdpconnect']);
+        }
+        else
+        {
+            var_dump($_POST);
+            echo ' Erreur, il y a un champ vide';
+        }
+
+        break;
 
     case "deconnexion":
     	deconnexion();
+        break;
 
-	case "formInscription":   
+	case "inscription":   
 		formInscription();
+        break;
+
+
 
 	case "validInscription":
-	 if (!empty($_POST['pseudo']) AND !empty($_POST['mail']) AND !empty($_POST['mdp']))
+        if (!empty($_POST['pseudo']) AND !empty($_POST['mail']) AND !empty($_POST['mdp']))
         {
             validInscription($_POST['pseudo'],$_POST['mail'],$_POST['mdp']); 
      
@@ -67,9 +92,10 @@ switch ($_GET['action'])
         else 
         {
             echo " erreur ";
-        }	
+        }
+        break;	
     default:
-        listPosts();
+       page404();
 }
 
 ?>
