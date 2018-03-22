@@ -1,6 +1,6 @@
 <?php
 
-require_once ('model/model.php');
+require_once ('model/frontend/model.php');
 
 function addArticle($author, $title, $content)
 {
@@ -60,4 +60,3 @@ function deconnexion()
 	}
 }
 
-}

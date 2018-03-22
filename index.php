@@ -1,6 +1,7 @@
 <?php 
 
 require ('controlers/controlerPublic.php');
+require ('controlers/controlerBack.php');
 
 if (isset($_GET['action']) == false)
 {
@@ -8,15 +9,19 @@ if (isset($_GET['action']) == false)
 	die();
 }	
 switch ($_GET['action']) 
-{
+{   
+    case "listPosts":
+        listPosts();
+        
 	case "post" :
 		if (isset($_GET['id']) && $_GET['id'] > 0) 
 		{
 		 	post();
 		} 	
-		 
-	case "listPosts":
-		listPosts();
+        else
+        {
+            echo 'Erreur : aucun identifiant de billet envoyé';
+        }
 		break;
 	default: 
 		page404();
@@ -44,8 +49,6 @@ switch ($_GET['action'])
         }
         else
         {
-            var_dump($_GET); 
-            var_dump($_POST);
             echo 'Erreur , tous les champs ne sont pas remplis .';
         }     
 
@@ -65,7 +68,8 @@ switch ($_GET['action'])
         {
             echo " erreur ";
         }	
-
+    default:
+        listPosts();
 }
-default:
-listPosts();
+
+?>

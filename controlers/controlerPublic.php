@@ -1,16 +1,12 @@
-<?php 
+<?php
 
-require_once ('model/model.php');
-
-function page404()
-{
-	require ('views/erreur_404.php');
-}
+require_once ('model/frontend/model.php');
 
 function listPosts()
 {
 	$posts = getPosts();
-	require ('view/frontend/listPostView.php');
+
+	require ('views/frontend/listPostsView.php');
 }
 
 function post()
@@ -18,17 +14,10 @@ function post()
 	$post = getPost($_GET['id']);
 	$comments = getComments($_GET['id']);
 
-	require ('view/frontend/postView.php');
+	require ('views/frontend/postView.php');
 }
+  
 
-function connexionForm ()
-{
-	require ('view/frontend/connexion.php');
-
-function formInscription()
-{
-	require ('view/frontend/inscription.php');
-}
 
 function addComment ($postId, $author,$comment)
 {
@@ -44,17 +33,20 @@ function addComment ($postId, $author,$comment)
 	}	
 }
 
-
-function addArticle($author, $title, $content)
+function connexionForm ()
 {
-	$affectedLines = postArticle($author, $title, $content);
-
-	if ($affectedLines === false)
-	{
-		die('Erreur d\'ajout de l\'article');
-	}
-	else 
-	{
-		header('location: index.php?action=listPosts');
-	}	
+	require ('views/frontend/connexion.php');
 }
+
+
+function formInscription()
+{
+	require ('views/frontend/inscription.php');
+}
+
+
+
+
+
+
+
