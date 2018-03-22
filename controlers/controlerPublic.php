@@ -2,6 +2,11 @@
 
 require_once ('model/frontend/model.php');
 
+function page404()
+{
+	require ('views/frontend/erreur_404.php');
+}
+
 function listPosts()
 {
 	$posts = getPosts();
