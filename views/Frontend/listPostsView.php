@@ -10,16 +10,17 @@
 <?php if ($etat == true) { ?> 
     <div align="left">
         <p> Bienvenue <?php echo $_SESSION['pseudo']; ?> </p>
-    </div>
     <form method="POST" action="index.php?action=deconnexion">
         <input type ="submit" name="deconnexion" value="Se déconnecter"/>
-    </form>    
+    </form>   
+    </div> 
 <?php }?>
     <div align="center">
         <h1>Blog de l'écrivain !</h1>
     </div>
     
-    <p>Derniers billets du blog :</p>
+    <h3>Derniers billets du blog :</h3>
+    <br></br>
 
 
     <?php while ($data = $posts->fetch()) { ?>
@@ -27,7 +28,8 @@
         <div class="news">
             <h3>
                 <?= htmlspecialchars($data['title']) ?>
-                le <?= $data['creation_date_fr'] ?>
+                le <?= $data['creation_date_fr'] ?><br>
+                <a href="index.php?action=post&id=<?= $data['id'] ?>">Lire la suite</a>
             </h3>
 
             <p>
