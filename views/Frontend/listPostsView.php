@@ -8,13 +8,16 @@
 ?>
 
 <?php if ($etat == true) { ?> 
-    <p> Bienvenue <?php echo $_SESSION['pseudo']; ?> </p>
+    <div align="left">
+        <p> Bienvenue <?php echo $_SESSION['pseudo']; ?> </p>
+    </div>
     <form method="POST" action="index.php?action=deconnexion">
         <input type ="submit" name="deconnexion" value="Se déconnecter"/>
-    </form>
+    </form>    
 <?php }?>
-
-    <h1>Blog de l'écrivain !</h1>
+    <div align="center">
+        <h1>Blog de l'écrivain !</h1>
+    </div>
     
     <p>Derniers billets du blog :</p>
 
@@ -34,8 +37,12 @@
             </p>
         </div>
     <?php } ?>
+
+
+
+ //Placer un footer 
     
-    <a href="index.php?action=form">Proposer un article </a>
+    <a href="index.php?action=addArticle">Proposer un article </a>
     <br>
     <a href="index.php?action=connexionForm">Se connecter </a>
     <br>
