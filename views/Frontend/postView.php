@@ -6,28 +6,29 @@
 <div class="news">
     <h3>
         <?= htmlspecialchars($post['title']) ?>
-        le <?= $post['creation_date_fr'] ?>
     </h3>
+    <h5>le <?= $post['creation_date_fr'] ?></h5>
     
     <p>
         <?= nl2br(htmlspecialchars($post['content'])) ?>
     </p>
 </div>
+<br>
 
-<h2>Commentaires</h2>
+<h4>Commentaires</h4>
 
 
 <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
     <div>
-        <label for="author">Auteur</label><br />
+        <b><label for="author">Auteur</label><br /></b>
         <input type="text" id="author" name="author" required />
     </div>
     <div>
-        <label for="comment">Commentaire</label><br />
+        <b><label for="comment">Commentaire</label><br /></b>
         <textarea id="content" name="comment" required></textarea>
     </div>
     <div>
-        <input type="submit" />
+        <button type="submit" class="btn btn-primary">Valider</button>
     </div>
 </form>
 

@@ -9,10 +9,7 @@
 
 <?php if ($etat == true) { ?> 
     <div align="left">
-        <p> Bienvenue <?php echo $_SESSION['pseudo']; ?> </p>
-    <form method="POST" action="index.php?action=deconnexion">
-        <input type ="submit" name="deconnexion" value="Se déconnecter"/>
-    </form>   
+        <p> Bienvenue <?php echo $_SESSION['pseudo']; ?> </p> 
     </div> 
 <?php }?>
     <div align="center">
@@ -28,27 +25,51 @@
         <div class="news">
             <h3>
                 <?= htmlspecialchars($data['title']) ?>
+            </h3>
+            <h6>    
                 le <?= $data['creation_date_fr'] ?><br>
                 <a href="index.php?action=post&id=<?= $data['id'] ?>">Lire la suite</a>
-            </h3>
+            </h6>
 
             <p>
                 <?= nl2br(htmlspecialchars($data['content'])) ?>
                 <br />
-                <a href="index.php?action=post&id=<?= $data['id'] ?>">Commentaires</a>
             </p>
         </div>
     <?php } ?>
 
+     <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+           <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
 
 
- //Placer un footer 
     
-    <a href="index.php?action=addArticle">Proposer un article </a>
     <br>
-    <a href="index.php?action=connexionForm">Se connecter </a>
     <br>
-    <a href ="index.php?action=formInscription"> S'inscrire </a>
+
+
+<footer>
+    <ul>
+        <li><a href="index.php?action=FormAddArticle">Proposer un article </a></li>
+        <?php if(empty($_SESSION['pseudo'])) { ?>
+                <li><a  href="index.php?action=connexion"> Connexion</a></li>
+                <li><a href ="index.php?action=formInscription">Inscription</a></li>
+        <?php } else { ?>
+                <li><a class="btn btn-success my-2 my-sm-0" href="index.php?action=deconnexion"> Deconnexion</a></li>
+    <?php } ?>
+    </ul>
+    
+</footer>
 
 <?php $content = ob_get_clean(); ?>
 

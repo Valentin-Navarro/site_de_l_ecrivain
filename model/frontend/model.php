@@ -16,7 +16,7 @@ function dbConnect()
 function getPosts()
 {
     $db = dbConnect();
-    $req = $db->query('SELECT id, title ,author, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets ORDER BY creation_date DESC LIMIT 0, 5');
+    $req = $db->query('SELECT id, title , content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets ORDER BY creation_date DESC LIMIT 0, 5');
     
      return $req;
 }
@@ -40,11 +40,11 @@ function getComments($postId)
     return $comments;
 }
 
-function postArticle ($author,$title,$content) 
+function postArticle ($title,$content) 
 {
     $db = dbConnect();
-    $article = $db->prepare('INSERT INTO billets (author,title,content,creation_date) VALUES (?,?,?, NOW())');
-    $affectedLines = $article -> execute (array($author, $title, $content));
+    $article = $db->prepare('INSERT INTO billets (title,content,creation_date) VALUES (?,?, NOW())');
+    $affectedLines = $article -> execute (array($title, $content));
 
     return $affectedLines;
 }
