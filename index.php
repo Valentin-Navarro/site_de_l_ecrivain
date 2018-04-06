@@ -25,14 +25,19 @@ switch ($_GET['action'])
         }
 		break;
 
+
+    case "formAddArticle":
+        formAddArticle();
+        break;
+
 	case "addArticle" :  
+    //proteger mon traitement 
 	   if (
-            !empty($_POST['author']) && 
             !empty($_POST['content']) && 
             !empty($_POST['title'])
         )   
         {
-            addArticle($_POST['author'],$_POST['title'],$_POST['content']) ; 
+            addArticle($_POST['title'],$_POST['content']) ; 
         } 
         else
         {
