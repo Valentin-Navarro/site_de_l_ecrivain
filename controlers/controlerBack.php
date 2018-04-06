@@ -2,9 +2,9 @@
 
 require_once ('model/frontend/model.php');
 
-function addArticle($author, $title, $content)
+function addArticle( $title, $content)
 {
-	$affectedLines = postArticle($author, $title, $content);
+	$affectedLines = postArticle($title, $content);
 
 	if ($affectedLines === false)
 	{
@@ -28,7 +28,7 @@ function traitementConnexion($mail,$mdp)
 	}
 	else 
 	{
-		$_SESSION['pseudo']= $membre['pseudo'] ; 
+		$_SESSION['pseudo'] = $membre['pseudo'] ; 
 		header('location: index.php?action=listPosts');
 	}
 
@@ -60,3 +60,34 @@ function deconnexion()
 	}
 }
 
+function formAddArticle()
+{
+	$etat = array_key_exists('pseudo',$_SESSION);
+
+	if ($etat === true)
+	{
+		require ('views/backend/formAddArticle.php');
+    }
+    else
+    {
+    	header('location: index.php?action=connexion');
+    }	
+}
+
+function approveComment ()
+{
+	if(isset($_GET['type']) AND $_GET['type'] == 'commentaire') {
+    if(isset($_GET['approuve']) AND !empty($_GET['approuve'])) {
+      $approuve = (int) $_GET['approuve'];
+      $req = $bdd->prepare('UPDATE commentaires SET approuve = 1 WHERE id = ?');
+      $req->execute(array($approuve)); 
+}
+
+function deleteComment ()
+{
+	if(isset($_GET['supprime']) AND !empty($_GET['supprime'])) {
+      $supprime = (int) $_GET['supprime'];
+      $req = $bdd->prepare('DELETE FROM commentaires WHERE id = ?');
+      $req->execute(array($supprime));
+}
+// up article et delete article 
