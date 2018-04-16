@@ -23,7 +23,12 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="index.php?action=listPosts">Les articles</a><br>
-      <a class="navbar-brand" href="index.php?action=formAddArticle">Proposer un article</a><br>
+      <?php if(empty($_SESSION['pseudo'])) { ?>
+      <?php } else { ?>
+        <a class="navbar-brand" href="index.php?action=formAddArticle">Ecrire un nouvel article</a><br>
+        <a class="navbar-brand" href="index.php?action=pageAdmin">Modération</a><br>
+      <?php } ?>
+     
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
@@ -31,7 +36,6 @@
         <div class=" my-2 my-lg-0">
           <?php if(empty($_SESSION['pseudo'])) { ?>
             <a class="btn btn-success my-2 my-sm-0" href="index.php?action=connexion"></i> Connexion</a>
-            <a class="btn btn-success my-2 my-sm-0" href="index.php?action=inscription">Inscription</a>
           <?php } else { ?>
             <a class="btn btn-success my-2 my-sm-0" href="index.php?action=deconnexion"></i> Deconnexion</a>
           <?php } ?>
