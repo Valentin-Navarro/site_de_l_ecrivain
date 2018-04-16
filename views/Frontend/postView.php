@@ -17,20 +17,19 @@
 
 <h4>Commentaires</h4>
 
-
 <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
-    <div>
-        <b><label for="author">Auteur</label><br /></b>
-        <input type="text" id="author" name="author" required />
-    </div>
-    <div>
-        <b><label for="comment">Commentaire</label><br /></b>
-        <textarea id="content" name="comment" required></textarea>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary">Valider</button>
-    </div>
+  <div class="form-group">
+    <label for="author">Auteur</label>
+    <input type="text" class="form-control" id="author"  >
+  </div>
+  <div class="form-group">
+    <label for="comment">Commentaire</label>
+    <input type="text" class="form-control" id="comment" placeholder="comment">
+  </div>
+  <button type="submit" class="btn btn-primary">Valider</button>
 </form>
+
+
 
 <br /><br />
 <?php while ($comment = $comments->fetch()) { ?>

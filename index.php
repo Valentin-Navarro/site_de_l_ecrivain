@@ -25,6 +25,11 @@ switch ($_GET['action'])
         }
 		break;
 
+    case "pageAdmin" :
+        pageAdmin();
+        break;
+
+        
 
     case "formAddArticle":
         formAddArticle();
@@ -57,6 +62,24 @@ switch ($_GET['action'])
             echo 'Erreur , tous les champs ne sont pas remplis .';
         }  
         break;
+
+    case "approveComment":
+        if(isset($_GET['approuve']) AND !empty($_GET['approuve']))
+        
+        {
+            $approuve = (int) $_GET['approuve'];
+            approveComment();
+        }
+        break;
+
+    case "deleteComment":
+        if(isset($_GET['supprime']) AND !empty($_GET['supprime'])) 
+        
+        {
+            $supprime = (int) $_GET['supprime'];
+            deleteComment();  
+        }
+        break;   
 
     case "connexion":
         connexionForm();  

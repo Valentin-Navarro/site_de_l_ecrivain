@@ -78,4 +78,32 @@ function addMembres ($pseudo,$mail,$mdp)
 
     return $affectedLines;
 }
+
+function approveComment ($approuve)
+{
+    $db = dbConnect();
+    $req = $bdd->prepare('UPDATE commentaires SET approuve = 1 WHERE id = ?');
+    $affectedLines = $req->execute(array($approuve)); 
+
+    return $affectedLines;
+}
+
+function deleteComment ($supprime)
+{
+    $db = dbConnect();
+    $req = $bdd->prepare('DELETE FROM commentaires WHERE id = ?');
+    $affectedLines = $req->execute(array($supprime));
+
+    return $affectedLines;
+}      
+
+function getAllComments()
+{
+    $db = dbConnect();
+    $comments = $db->prepare('SELECT id,approuve, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments ORDER BY creation_date DESC');
+    $comments->execute(array());
+
+    return $comments;
+}
+
 ?>
