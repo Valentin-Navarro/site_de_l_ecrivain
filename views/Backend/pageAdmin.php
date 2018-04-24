@@ -19,6 +19,9 @@
   </ul>
   <br /><br />
 
+
+  <h3>Edition Article </h3>
+
   <?php $content = ob_get_clean(); ?>
 
 <?php require('views/frontend/template.php'); ?>

@@ -49,6 +49,12 @@ function formInscription()
 	require ('views/frontend/inscription.php');
 }
 
+function signalerComment($signal)
+{
+	$manageComment = signalComment();
+	
+	require ('views/frontend/postView.php');
+}
 
 
 

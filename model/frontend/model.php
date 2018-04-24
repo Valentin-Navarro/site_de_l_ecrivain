@@ -52,7 +52,7 @@ function postArticle ($title,$content)
 function postComment ($postId,$author,$comment)
 {
     $db = dbConnect();
-    $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date) VALUES (?,?,?, NOW())');
+    $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,approuve,signaler) VALUES (?,?,?, NOW(),0,0)');
     $affectedLines = $comments -> execute (array ($postId, $author, $comment));
 
     return $affectedLines;
@@ -82,7 +82,7 @@ function addMembres ($pseudo,$mail,$mdp)
 function approveComment ($approuve)
 {
     $db = dbConnect();
-    $req = $bdd->prepare('UPDATE commentaires SET approuve = 1 WHERE id = ?');
+    $req = $db->prepare('UPDATE commentaires SET approuve = 1 WHERE id = ?');
     $affectedLines = $req->execute(array($approuve)); 
 
     return $affectedLines;
@@ -91,7 +91,7 @@ function approveComment ($approuve)
 function deleteComment ($supprime)
 {
     $db = dbConnect();
-    $req = $bdd->prepare('DELETE FROM commentaires WHERE id = ?');
+    $req = $db->prepare('DELETE FROM commentaires WHERE id = ?');
     $affectedLines = $req->execute(array($supprime));
 
     return $affectedLines;
@@ -104,6 +104,15 @@ function getAllComments()
     $comments->execute(array());
 
     return $comments;
+}
+
+function signalComment ($signal)
+{
+    $db = dbConnect();
+    $req = $db->prepare('UPDATE commentaires SET signaler = 1 WHERE id = ?');
+    $affectedLines = $req->execute(array($signal)); 
+
+    return $affectedLines;
 }
 
 ?>

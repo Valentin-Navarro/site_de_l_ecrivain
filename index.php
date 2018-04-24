@@ -63,6 +63,11 @@ switch ($_GET['action'])
         }  
         break;
 
+    case "signalComment":
+        signalerComment($manageComment);
+        echo "Vous avez bien signalé ce commentaire";
+        break;
+
     case "approveComment":
         if(isset($_GET['approuve']) AND !empty($_GET['approuve']))
         
