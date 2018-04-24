@@ -1,30 +1,22 @@
 
 <?php ob_start(); ?>
-<h1>Blog de l'écrivain !</h1>
 <p><a href="index.php?action=accueil">Retour à la liste des billets</a></p>
-
-<div class="news">
-    <h3>
-        <?= htmlspecialchars($post['title']) ?>
-    </h3>
-    <h5>le <?= $post['creation_date_fr'] ?></h5>
-    
-    <p>
-        <?= nl2br(htmlspecialchars($post['content'])) ?>
-    </p>
+<div class="jumbotron mb-5">
+  <h1 class="display-4"><?=($post['title']) ?></h1>
+  <p class="lead">le <?= $post['creation_date_fr'] ?></p>
+  <hr class="my-4">
+  <p><?= nl2br($post['content']) ?></p>
 </div>
-<br>
-
 <h4>Commentaires</h4>
 
 <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
   <div class="form-group">
     <label for="author">Auteur</label>
-    <input type="text" class="form-control" id="author"  >
+    <input type="text" class="form-control" id="author" name="author" >
   </div>
   <div class="form-group">
     <label for="comment">Commentaire</label>
-    <input type="text" class="form-control" id="comment" placeholder="comment">
+    <textarea class="form-control" id="comment" name="comment"></textarea>
   </div>
   <button type="submit" class="btn btn-primary">Valider</button>
 </form>
@@ -33,7 +25,17 @@
 
 <br /><br />
 <?php while ($comment = $comments->fetch()) { ?>
-    <b><?=$comment['author'] ?>:</b><?=$comment['comment'] ?><br />
+    
+
+<div class="card mb-2">
+  <div class="card-body">
+    <h6 class="card-subtitle mb-2 text-muted"><?=$comment['author'] ?> : </h6>
+    <p class="card-text"><?=$comment['comment'] ?></p>
+    <div class= "text-right">
+    <a href="index.php?action=signalComment&id=<?= $comment['id'] ?>" class="card-link text-right">Signaler</a>
+    </div>
+  </div>
+</div>
 
 <?php }?>
 

@@ -12,30 +12,21 @@
         <p> Bienvenue <?php echo $_SESSION['pseudo']; ?> </p> 
     </div> 
 <?php }?>
-    <div align="center">
-        <h1>Blog de l'écrivain !</h1>
-    </div>
     
-    <h3>Derniers billets du blog :</h3>
-    <br></br>
+    <h1 class = "text-center mb-5">Blog de l'écrivain !</h1>
 
 
     <?php while ($data = $posts->fetch()) { ?>
-   
-        <div class="news">
-            <h3>
-                <?= htmlspecialchars($data['title']) ?>
-            </h3>
-            <h6>    
-                le <?= $data['creation_date_fr'] ?><br>
-                <a href="index.php?action=post&id=<?= $data['id'] ?>">Lire la suite</a>
-            </h6>
-
-            <p>
-                <?= nl2br(htmlspecialchars($data['content'])) ?>
-                <br />
-            </p>
-        </div>
+    <div class="card mb-4" >
+  <div class="card-body">
+    <h5 class="card-title"><?= ($data['title']) ?></h5>
+    <h6 class="card-subtitle mb-2 text-muted">le <?= $data['creation_date_fr'] ?></h6>
+    <p class="card-text"><?= nl2br($data['content']) ?></p>
+    <div class= "text-right">
+    <a href="index.php?action=post&id=<?= $data['id'] ?>" class="card-link">Lire la suite</a>
+    </div>
+  </div>
+</div>
     <?php } ?>
 
      <nav aria-label="Page navigation example">
@@ -63,7 +54,6 @@
         <li><a href="index.php?action=FormAddArticle">Proposer un article </a></li>
         <?php if(empty($_SESSION['pseudo'])) { ?>
                 <li><a  href="index.php?action=connexion"> Connexion</a></li>
-                <li><a href ="index.php?action=formInscription">Inscription</a></li>
         <?php } else { ?>
                 <li><a class="btn btn-success my-2 my-sm-0" href="index.php?action=deconnexion"> Deconnexion</a></li>
     <?php } ?>
