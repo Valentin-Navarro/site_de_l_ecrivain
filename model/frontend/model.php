@@ -82,16 +82,16 @@ function addMembres ($pseudo,$mail,$mdp)
 function approveComment ($approuve)
 {
     $db = dbConnect();
-    $req = $db->prepare('UPDATE commentaires SET approuve = 1 WHERE id = ?');
+    $req = $db->prepare('UPDATE comments SET approuve = 1 WHERE id = ?');
     $affectedLines = $req->execute(array($approuve)); 
 
     return $affectedLines;
 }
 
-function deleteComment ($supprime)
+function deleteCommentModel ($supprime)
 {
     $db = dbConnect();
-    $req = $db->prepare('DELETE FROM commentaires WHERE id = ?');
+    $req = $db->prepare('DELETE FROM comments WHERE id = ?');
     $affectedLines = $req->execute(array($supprime));
 
     return $affectedLines;
@@ -106,11 +106,11 @@ function getAllComments()
     return $comments;
 }
 
-function signalComment ($signal)
+function signalComment ($idComment)
 {
     $db = dbConnect();
-    $req = $db->prepare('UPDATE commentaires SET signaler = 1 WHERE id = ?');
-    $affectedLines = $req->execute(array($signal)); 
+    $req = $db->prepare('UPDATE comments SET signaler = 1 WHERE id = ?');
+    $affectedLines = $req->execute(array($idComment)); 
 
     return $affectedLines;
 }

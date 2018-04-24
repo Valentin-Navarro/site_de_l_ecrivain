@@ -13,7 +13,7 @@
             <?php if ($comment['approuve'] == 0) { ?> 
                 - <a href="index.php?action=approveComment&id=<?= $comment['id'] ?>">Approuver</a>
             <?php } ?> 
-            - <a href="index.php?action=deleteComment&id=<?= $comment['id'] ?>">Supprimer</a>
+            - <a href="index.php?action=deleteComment&idComment=<?= $comment['id'] ?>">Supprimer</a>
         </li>
     <?php } ?>  
   </ul>
@@ -22,9 +22,12 @@
 
   <h3>Edition Article </h3>
 
+<!-- // travailler avec un php while pour recuperer la liste des articles et creer requete sql pour UPDATE  -->
+
   <?php $content = ob_get_clean(); ?>
 
 <?php require('views/frontend/template.php'); ?>
 
 
-// afficher un formulaire avec les commentaires , et bouton destroy 
+
+ <!-- afficher un formulaire avec les commentaires , et bouton destroy  -->

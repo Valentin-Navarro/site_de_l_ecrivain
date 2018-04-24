@@ -49,11 +49,11 @@ function formInscription()
 	require ('views/frontend/inscription.php');
 }
 
-function signalerComment($signal)
+function signalerComment()
 {
-	$manageComment = signalComment();
+	$alertComment = signalComment($_GET['id']);
 	
-	require ('views/frontend/postView.php');
+	header ('location: index.php?action=listPosts');
 }
 
 

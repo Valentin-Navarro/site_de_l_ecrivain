@@ -64,8 +64,8 @@ switch ($_GET['action'])
         break;
 
     case "signalComment":
-        signalerComment($manageComment);
-        echo "Vous avez bien signalé ce commentaire";
+            signalerComment();
+            echo "Vous avez bien signalé ce commentaire";   
         break;
 
     case "approveComment":
@@ -78,11 +78,15 @@ switch ($_GET['action'])
         break;
 
     case "deleteComment":
-        if(isset($_GET['supprime']) AND !empty($_GET['supprime'])) 
+        if(isset($_GET['idComment']) AND !empty($_GET['idComment'])) 
         
         {
-            $supprime = (int) $_GET['supprime'];
-            deleteComment();  
+            $supprime = (int) $_GET['idComment'];
+            deleteCommentControler();  
+        }
+        else
+        {
+            echo "Erreur il manque un paramètre" ;
         }
         break;   
 

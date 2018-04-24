@@ -90,6 +90,11 @@ function pageAdmin ()
 
 }
 
+function deleteCommentControler()
+{
+	$suppComment = deleteCommentModel($_GET['idComment']) ;
 
+	header ('location:index.php?action=pageAdmin');
+}
 
-// up article et delete article 
+ 
