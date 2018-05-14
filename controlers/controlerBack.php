@@ -17,6 +17,23 @@ function addArticle( $title, $content)
 
 }
 
+function majArticleControler($idBillet , $title , $content)
+{
+	$affectedLines = majArticleModel($idBillet ,$title , $content);
+
+	if ($affectedLines === false)
+	{
+		die('Erreur d\'ajout de l\'article');
+	}
+	else 
+	{
+		header('location: index.php?action=listPosts');
+	}	
+
+}
+
+
+
 function traitementConnexion($mail,$mdp)
 {
 	$mdp = sha1($mdp);
@@ -78,6 +95,7 @@ function pageAdmin ()
 {
 	$etat = array_key_exists('pseudo',$_SESSION);
 	$comments = getAllComments();
+	$posts = getPosts();
 	if ($etat === true)
 	{	
 		require ('views/backend/pageAdmin.php');
@@ -90,11 +108,35 @@ function pageAdmin ()
 
 }
 
-function deleteCommentControler()
+function deleteCommentControler($idComment)
 {
-	$suppComment = deleteCommentModel($_GET['idComment']) ;
+	$suppComment = deleteCommentModel($idComment) ;
 
 	header ('location:index.php?action=pageAdmin');
 }
+
+function formEditionArticle ($idBillet)
+{
+	$etat = array_key_exists('pseudo',$_SESSION);
+	$billet = getPost($idBillet);
+
+	if ($etat === true)
+	{
+		require ('views/backend/editionArticle.php');
+    }
+    else
+    {
+    	header('location: index.php?action=connexion');
+    }
+}
+
+function deleteArticleControler ($idBillet)
+{
+	$suppArticle = deleteArticleModel($idBillet) ; 
+
+	header ('location:index.php?action=pageAdmin');
+}
+
+?>
 
  

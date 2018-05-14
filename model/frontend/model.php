@@ -16,26 +16,26 @@ function dbConnect()
 function getPosts()
 {
     $db = dbConnect();
-    $req = $db->query('SELECT id, title , content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets ORDER BY creation_date DESC LIMIT 0, 5');
+    $req = $db->query('SELECT id, title , content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets ORDER BY creation_date DESC LIMIT 0, 10');
     
      return $req;
 }
 
-function getPost($postId)
+function getPost($idBillet)
 {
     $db = dbConnect();
     $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets WHERE id = ?');
-    $req->execute(array($postId));
+    $req->execute(array($idBillet));
     $post = $req->fetch();
 
     return $post;
 }
 
-function getComments($postId)
+function getComments($idBillet)
 {
     $db = dbConnect();
     $comments = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC LIMIT 0,10');
-    $comments->execute(array($postId));
+    $comments->execute(array($idBillet));
 
     return $comments;
 }
@@ -49,11 +49,11 @@ function postArticle ($title,$content)
     return $affectedLines;
 }
 
-function postComment ($postId,$author,$comment)
+function postComment ($idBillet,$author,$comment)
 {
     $db = dbConnect();
     $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,approuve,signaler) VALUES (?,?,?, NOW(),0,0)');
-    $affectedLines = $comments -> execute (array ($postId, $author, $comment));
+    $affectedLines = $comments -> execute (array ($idBillet, $author, $comment));
 
     return $affectedLines;
 
@@ -115,4 +115,22 @@ function signalComment ($idComment)
     return $affectedLines;
 }
 
+function majArticleModel($idBillet ,$title, $content)
+{
+    $db = dbConnect();
+    $req = $db->prepare('UPDATE billets SET title = :title, content = :content WHERE id = :id');
+    $affectedLines = $req->execute(['title' => $title ,'content' => $content ,'id' => $idBillet]);
+
+    return $affectedLines;
+}  
+
+function deleteArticleModel ($supprime) 
+{
+  $db = dbConnect();
+    $req = $db->prepare('DELETE FROM billets WHERE id = ?');
+    $affectedLines = $req->execute(array($supprime));
+
+    return $affectedLines; 
+}
+    
 ?>
