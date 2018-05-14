@@ -14,19 +14,18 @@ function listPosts()
 	require ('views/frontend/listPostsView.php');
 }
 
-function post()
+function post($idBillet)
 {
-	$post = getPost($_GET['id']);
-	$comments = getComments($_GET['id']);
-
+	$post = getPost($idBillet);
+	$comments = getComments($idBillet);
 	require ('views/frontend/postView.php');
 }
   
 
 
-function addComment ($postId, $author,$comment)
+function addComment ($idBillet, $author,$comment)
 {
-	$affectedLines = postComment ($postId, $author, $comment);
+	$affectedLines = postComment ($idBillet, $author, $comment);
 
 	if ($affectedLines === false)
 	{
@@ -34,7 +33,7 @@ function addComment ($postId, $author,$comment)
 	}
 	else
 	{
-		header ('location: index.php?action=post&id=' . $postId);
+		header ('location: index.php?action=post&id=' . $idBillet);
 	}	
 }
 
@@ -49,14 +48,15 @@ function formInscription()
 	require ('views/frontend/inscription.php');
 }
 
-function signalerComment()
+function signalerComment($idBillet)
 {
-	$alertComment = signalComment($_GET['id']);
+	$alertComment = signalComment($idBillet);
 	
 	header ('location: index.php?action=listPosts');
+	echo 'Vous avez bien signalé ce commentaire';
 }
 
-
+?>
 
 
 

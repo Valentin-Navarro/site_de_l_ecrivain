@@ -1,6 +1,6 @@
 
 <?php ob_start(); ?>
-<p><a href="index.php?action=accueil">Retour à la liste des billets</a></p>
+<p><a href="index.php?action=listPosts">Retour à la liste des billets</a></p>
 <div class="jumbotron mb-5">
   <h1 class="display-4"><?=($post['title']) ?></h1>
   <p class="lead">le <?= $post['creation_date_fr'] ?></p>

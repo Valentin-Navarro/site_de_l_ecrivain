@@ -17,7 +17,7 @@ switch ($_GET['action'])
 	case "post" :
 		if (isset($_GET['id']) && $_GET['id'] > 0) 
 		{
-		 	post();
+		 	post($_GET['id']);
 		} 	
         else
         {
@@ -50,6 +50,29 @@ switch ($_GET['action'])
         }  
         break;
 
+    case "editionArticle":
+            formEditionArticle($_GET['id']);
+        break ;
+
+    case "deleteArticle":
+            deleteArticleControler($_GET['id']);   
+        break ;     
+            
+
+    case "majArticle":
+        if (
+            !empty($_POST['title']) && 
+            !empty($_POST['content'])
+        )   
+        {
+            majArticleControler($_GET['id'],$_POST['title'],$_POST['content']) ;            
+        } 
+        else
+        {
+            echo 'Erreur: tous les champs ne sont pas remplis .';
+        }  
+        break; 
+
     case "addComment":
         if  (
             !empty($_GET['id']) && !empty($_POST['author']) && !empty($_POST['comment'])
@@ -64,15 +87,15 @@ switch ($_GET['action'])
         break;
 
     case "signalComment":
-            signalerComment();
+            signalerComment($_GET['id']);
             echo "Vous avez bien signalé ce commentaire";   
         break;
 
     case "approveComment":
-        if(isset($_GET['approuve']) AND !empty($_GET['approuve']))
+        if(isset($_GET['idComment']) AND !empty($_GET['idComment']))
         
         {
-            $approuve = (int) $_GET['approuve'];
+            $approuve = (int) $_GET['idComment'];
             approveComment();
         }
         break;
@@ -81,8 +104,7 @@ switch ($_GET['action'])
         if(isset($_GET['idComment']) AND !empty($_GET['idComment'])) 
         
         {
-            $supprime = (int) $_GET['idComment'];
-            deleteCommentControler();  
+            deleteCommentControler($_GET['idComment']);  
         }
         else
         {
@@ -134,5 +156,7 @@ switch ($_GET['action'])
     default:
        page404();
 }
+
+// Mettre en place la suppression d'article , Continuer la supp des superglobales POST "model" 
 
 ?>
