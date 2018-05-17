@@ -16,14 +16,14 @@
     <h1 class = "text-center mb-5">Blog de l'écrivain !</h1>
 
 
-    <?php while ($data = $posts->fetch()) { ?>
+    <?php foreach ($posts as $billet) { ?>
     <div class="card mb-4" >
   <div class="card-body">
-    <h5 class="card-title"><?= ($data['title']) ?></h5>
-    <h6 class="card-subtitle mb-2 text-muted">le <?= $data['creation_date_fr'] ?></h6>
-    <p class="card-text"><?= nl2br($data['content']) ?></p>
+    <h5 class="card-title"><?= $billet->title ?></h5>
+    <h6 class="card-subtitle mb-2 text-muted">le <?= $billet->creation_date_fr ?></h6>
+    <p class="card-text"><?= nl2br($billet->content) ?></p>
     <div class= "text-right">
-    <a href="index.php?action=post&id=<?= $data['id'] ?>" class="card-link">Lire la suite</a>
+    <a href="index.php?action=post&id=<?= $billet->id ?>" class="card-link">Lire la suite</a>
     </div>
   </div>
 </div>

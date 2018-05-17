@@ -95,7 +95,7 @@ function pageAdmin ()
 {
 	$etat = array_key_exists('pseudo',$_SESSION);
 	$comments = getAllComments();
-	$posts = getPosts();
+	$billets = getPosts();
 	if ($etat === true)
 	{	
 		require ('views/backend/pageAdmin.php');

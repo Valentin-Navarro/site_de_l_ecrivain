@@ -11,20 +11,22 @@
         <li>
             <?= $comment['id'] ?> : <?= $comment['author']?> : <?= $comment['comment'] ?> 
             <?php if ($comment['approuve'] == 0 ) { ?> 
-                - <a href="index.php?action=approveComment&id=<?= $comment['id'] ?>">Commentaire Signalé</a>
+                - <a href="index.php?action=approveComment&id=<?= $comment['id'] ?>">Approuve</a>
             <?php } ?> 
             - <a href="index.php?action=deleteComment&idComment=<?= $comment['id'] ?>">Supprimer</a>
+            
         </li>
     <?php } ?>  
   </ul>
 
    <h5 class="display-4 text-center mb-5">Liste des Articles </h5>
   <ul>
-    <?php while ($billet = $posts->fetch()){ ?>
+    <?php foreach ($billets as $billet) { ?>
+    
         <li>
-            <?= $billet['id'] ?> : <?= $billet['title']?> 
-            - <a href="index.php?action=editionArticle&id=<?= $billet['id'] ?>">Modifier l'article</a>
-              <a href="index.php?action=deleteArticle&id=<?= $billet['id'] ?>">Supprimer l'article</a>
+            <?= $billet->id ?> : <?= $billet->title ?> 
+            - <a href="index.php?action=editionArticle&id=<?= $billet->id ?>">Modifier l'article</a>
+              <a href="index.php?action=deleteArticle&id=<?= $billet->id ?>">Supprimer l'article</a>
         </li>
     <?php } ?>  
   </ul>

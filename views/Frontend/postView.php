@@ -2,14 +2,14 @@
 <?php ob_start(); ?>
 <p><a href="index.php?action=listPosts">Retour à la liste des billets</a></p>
 <div class="jumbotron mb-5">
-  <h1 class="display-4"><?=($post['title']) ?></h1>
-  <p class="lead">le <?= $post['creation_date_fr'] ?></p>
+  <h1 class="display-4"><?= $post->title ?></h1>
+  <p class="lead">le <?= $post->creation_date_fr?></p>
   <hr class="my-4">
-  <p><?= nl2br($post['content']) ?></p>
+  <p><?= nl2br ($post->content)?></p>
 </div>
 <h4>Commentaires</h4>
 
-<form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+<form action="index.php?action=addComment&amp;id=<?= $post->id ?>" method="post">
   <div class="form-group">
     <label for="author">Auteur</label>
     <input type="text" class="form-control" id="author" name="author" >

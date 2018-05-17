@@ -1,4 +1,6 @@
 <?php
+require ('model/Billet.php');
+
 function dbConnect()
 {
     try
@@ -17,8 +19,19 @@ function getPosts()
 {
     $db = dbConnect();
     $req = $db->query('SELECT id, title , content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets ORDER BY creation_date DESC LIMIT 0, 10');
-    
-     return $req;
+    $billets = [] ;
+    while ($post = $req->fetch()) 
+    {
+    $billet = new Billet ;
+    $billet->id = $post['id'] ; 
+    $billet->title = $post['title'] ; 
+    $billet->content = $post['content'] ; 
+    $billet->creation_date_fr = $post['creation_date_fr'] ;
+    $billets[] = $billet;
+    }
+
+
+    return $billets;
 }
 
 function getPost($idBillet)
@@ -27,8 +40,13 @@ function getPost($idBillet)
     $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets WHERE id = ?');
     $req->execute(array($idBillet));
     $post = $req->fetch();
+    $billet = new Billet ;
+    $billet->id = $idBillet;
+    $billet->title = $post['title'] ; 
+    $billet->content = $post['content'] ; 
+    $billet->creation_date_fr = $post['creation_date_fr'] ;
 
-    return $post;
+    return $billet;
 }
 
 function getComments($idBillet)
@@ -79,7 +97,7 @@ function addMembres ($pseudo,$mail,$mdp)
     return $affectedLines;
 }
 
-function approveComment ($approuve)
+function approveCommentModel ($approuve)
 {
     $db = dbConnect();
     $req = $db->prepare('UPDATE comments SET approuve = 1 WHERE id = ?');
