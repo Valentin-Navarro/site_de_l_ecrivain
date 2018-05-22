@@ -1,5 +1,7 @@
 <?php
 require ('model/Billet.php');
+require ('model/Comment.php');
+
 
 function dbConnect()
 {
@@ -52,19 +54,17 @@ function getPost($idBillet)
 function getComments($idBillet)
 {
     $db = dbConnect();
-    $comments = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC LIMIT 0,10');
-    $comments->execute(array($idBillet));
+    $commentsRequest = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC LIMIT 0,10');
+    $commentsRequest->execute(array($idBillet));
     $comments =[] ; 
-    while($comments = $req->fetch())
+    while($commentArray = $commentsRequest->fetch())
     {
-        $comment = new Comment ;
-        $comment->id = $post['id'];
-        $comment->author = $post['author'];
-        $comment->content = $post['content'];
-        $comment->creation_date_fr = $post['creation_date_fr'] ;
-
-        return $comment
-
+        $commentObject = new Comment ;
+        $commentObject->id = $commentArray['id'];
+        $commentObject->author = $commentArray['author'];
+        $commentObject->comment = $commentArray['comment'];
+        $commentObject->creation_date_fr = $commentArray['creation_date_fr'] ;
+        $comments[] = $commentObject;
     }
 
     return $comments;

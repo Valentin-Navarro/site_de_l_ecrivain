@@ -18,6 +18,7 @@ function post($idBillet)
 {
 	$post = getPost($idBillet);
 	$comments = getComments($idBillet);
+	var_dump($comments);
 	require ('views/frontend/postView.php');
 }
   
