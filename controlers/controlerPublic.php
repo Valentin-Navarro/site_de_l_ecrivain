@@ -1,6 +1,8 @@
 <?php
 
 require_once ('model/frontend/model.php');
+require_once ('model/BilletManager.php');
+require_once ('model/CommentManager.php');
 
 function page404()
 {
