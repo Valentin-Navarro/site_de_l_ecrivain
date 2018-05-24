@@ -11,24 +11,30 @@ function page404()
 
 function listPosts()
 {
-	$posts = getPosts();
+	$BilletManager = new BilletManager(); //Création d'un objet 
+	$posts = $BilletManager-> getPosts(); // Appel d'une fonction de cet objet 
 
 	require ('views/frontend/listPostsView.php');
 }
 
 function post($idBillet)
 {
-	$post = getPost($idBillet);
-	$comments = getComments($idBillet);
-	var_dump($comments);
+	$BilletManager = new BilletManager();
+	$CommentManager = new CommentManager();
+
+	$post = $BilletManager->getPost($idBillet);
+	$comments = $CommentManager->getComments($idBillet);
+	
 	require ('views/frontend/postView.php');
 }
   
 
 
-function addComment ($idBillet, $author,$comment)
+function addComment ($idBillet,$author,$comment)
 {
-	$affectedLines = postComment ($idBillet, $author, $comment);
+	$CommentManager = new CommentManager();
+
+	$affectedLines = $CommentManager->postComment ($idBillet, $author, $comment);
 
 	if ($affectedLines === false)
 	{
