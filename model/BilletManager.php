@@ -1,18 +1,12 @@
 <?php 
 
+require_once("model/Manager.php");
+
 Class BilletManager 
 {
 	public $content ; 
 	public $creation_date_fr ;
 
-	
-	private function dbConnect() // rendre la fonction dbconnect privée car personne ne doit pouvoir y acceder depuis l'exterieur de la Class 
-	{
-		$db = new PDO('mysql:host=localhost;dbname=projet3;charset=utf8', 'root', '');
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        return $db;
-	}
 
 	public function getPosts()
 	{

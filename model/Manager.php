@@ -9,4 +9,16 @@ class Manager
 
         return $db;
 	}
+
+	private	function connexion ($mail,$mdp)
+	{
+    	$db = dbConnect();
+    	$req = $db->prepare ('SELECT id,pseudo FROM membres WHERE mail = ? AND mdp= ?');
+    	$req ->execute(array($mail,$mdp));
+    	$membre = $req->fetch();
+    
+    	return $membre ;
+        
+	}
 }
+
