@@ -2,6 +2,11 @@
 session_start();
 require ('controlers/controlerPublic.php');
 require ('controlers/controlerBack.php');
+require ('model/Billet.php');
+require ('model/BilletManager.php');
+require ('model/Comment.php');
+require ('model/CommentManager.php');
+require ('model/Manager.php');
 
 if (isset($_GET['action']) == false)
 {
@@ -51,11 +56,11 @@ switch ($_GET['action'])
         break;
 
     case "editionArticle":
-            formEditionArticle($_GET['id']);
+        formEditionArticle($_GET['id']);
         break ;
 
     case "deleteArticle":
-            deleteArticleControler($_GET['id']);   
+        deleteArticleControler($_GET['id']);   
         break ;     
             
 
@@ -87,17 +92,7 @@ switch ($_GET['action'])
         break;
 
     case "signalComment":
-            signalerComment($_GET['id']);
-            echo "Vous avez bien signalé ce commentaire";   
-        break;
-
-    case "approveComment":
-        if(isset($_GET['idComment']) AND !empty($_GET['idComment']))
-        
-        {
-            $approuve = (int) $_GET['idComment'];
-            approveComment();
-        }
+        signalerComment($_GET['id']);   
         break;
 
     case "deleteComment":
