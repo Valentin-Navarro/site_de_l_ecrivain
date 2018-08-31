@@ -1,8 +1,5 @@
 <?php
 
-require_once ('model/frontend/model.php');
-require_once ('model/BilletManager.php');
-require_once ('model/CommentManager.php');
 
 function page404()
 {
@@ -11,30 +8,37 @@ function page404()
 
 function listPosts()
 {
-	$BilletManager = new BilletManager(); //Création d'un objet 
-	$posts = $BilletManager-> getPosts(); // Appel d'une fonction de cet objet 
+	$etat = array_key_exists('pseudo',$_SESSION);
+	if ($etat === true) 
+	{
+		$pseudo = $_SESSION['pseudo'];
+	}
+	
+
+	$billetManager = new BilletManager(); //Création d'un objet 
+	$posts = $billetManager->getPosts(); // Appel d'une fonction de cet objet 
 
 	require ('views/frontend/listPostsView.php');
 }
 
 function post($idBillet)
 {
-	$BilletManager = new BilletManager();
-	$CommentManager = new CommentManager();
+	$billetManager = new BilletManager();
+	$commentManager = new CommentManager();
 
-	$post = $BilletManager->getPost($idBillet);
-	$comments = $CommentManager->getComments($idBillet);
+	$post = $billetManager->getPost($idBillet);
+	$comments = $commentManager->getComments($idBillet);
 	
 	require ('views/frontend/postView.php');
 }
   
 
 
-function addComment ($idBillet,$author,$comment)
+function addComment($idBillet,$author,$comment)
 {
-	$CommentManager = new CommentManager();
+	$commentManager = new CommentManager();
 
-	$affectedLines = $CommentManager->postComment ($idBillet, $author, $comment);
+	$affectedLines = $commentManager->postComment($idBillet, $author, $comment);
 
 	if ($affectedLines === false)
 	{
@@ -46,7 +50,7 @@ function addComment ($idBillet,$author,$comment)
 	}	
 }
 
-function connexionForm ()
+function connexionForm()
 {
 	require ('views/frontend/connexion.php');
 }
@@ -57,12 +61,13 @@ function formInscription()
 	require ('views/frontend/inscription.php');
 }
 
-function signalerComment($idBillet)
+function signalerComment($idComment)
 {
-	$alertComment = signalComment($idBillet);
+	$commentManager = new CommentManager();
+	$alertComment = $commentManager->signalComment($idComment);
 	
 	header ('location: index.php?action=listPosts');
-	echo 'Vous avez bien signalé ce commentaire';
+	
 }
 
 ?>

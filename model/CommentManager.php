@@ -1,75 +1,87 @@
 <?php 
 
-require_once("model/Manager.php");
-
 class CommentManager 
 {
-	public $content ; 
-	public $creation_date_fr ;
-
 
 	public function getComments($idBillet)
 	{
-		$db = dbConnect();
-    $commentsRequest = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC LIMIT 0,10');
-    $commentsRequest->execute(array($idBillet));
-    $comments =[] ; 
-    while($commentArray = $commentsRequest->fetch())
-    {
-        $commentObject = new Comment ;
-        $commentObject->id = $commentArray['id'];
-        $commentObject->author = $commentArray['author'];
-        $commentObject->comment = $commentArray['comment'];
-        $commentObject->creation_date_fr = $commentArray['creation_date_fr'] ;
-        $comments[] = $commentObject;
-    }
+        $manager = new Manager;
+		$db = $manager-> dbConnect();
+        $commentsRequest = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC LIMIT 0,10');
+        $commentsRequest->execute(array($idBillet));
+        $comments =[] ; 
+        while($commentArray = $commentsRequest->fetch())
+        {
+            $commentObject = new Comment ;
+            $commentObject->id = $commentArray['id'];
+            $commentObject->author = $commentArray['author'];
+            $commentObject->comment = $commentArray['comment'];
+            $commentObject->creation_date_fr = $commentArray['creation_date_fr'] ;
+            $comments[] = $commentObject;
+        }
 
-    return $comments;
+        return $comments;
 	}
 
 	public function postComment($idBillet,$author,$comment)
 	{
-		$db = dbConnect();
-    $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,approuve,signaler) VALUES (?,?,?, NOW(),0,0)');
-    $affectedLines = $comments -> execute (array ($idBillet, $author, $comment));
+        $manager = new Manager;
+		$db = $manager->dbConnect();
+        $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,approuve,signaler) VALUES (?,?,?, NOW(),0,0)');
+        $affectedLines = $comments -> execute (array ($idBillet, $author, $comment));
 
-    return $affectedLines;
+        return $affectedLines;
 
 	}
 
 	public function approveCommentModel($approuve)
 	{
 		$db = dbConnect();
-    $req = $db->prepare('UPDATE comments SET approuve = 1 WHERE id = ?');
-    $affectedLines = $req->execute(array($approuve)); 
+        $req = $db->prepare('UPDATE comments SET approuve = 1 WHERE id = ?');
+        $affectedLines = $req->execute(array($approuve)); 
 
-    return $affectedLines;
+        return $affectedLines;
 	}
 
 	public function deleteCommentModel($supprime)
 	{
-		$db = dbConnect();
-    $req = $db->prepare('DELETE FROM comments WHERE id = ?');
-    $affectedLines = $req->execute(array($supprime));
+        $manager = new Manager;
+		$db = $manager->dbConnect();
+        $req = $db->prepare('DELETE FROM comments WHERE id = ?');
+        $affectedLines = $req->execute(array($supprime));
 
-    return $affectedLines;
+        return $affectedLines;
 	}
 
-	public function getAllComments()
+	public function getAllComments() 
 	{
-		$db = dbConnect();
-    $comments = $db->prepare('SELECT id,approuve, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments ORDER BY creation_date DESC');
-    $comments->execute(array());
+        $manager = new Manager;
+        $db = $manager->dbConnect();
+        $commentsRequest = $db->prepare('SELECT id,approuve, author, comment, signaler, DATE_FORMAT(creation_date,\'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments ORDER BY creation_date DESC');
+        $commentsRequest->execute(array());
+        $comments =[] ; 
 
-    return $comments;
-	}
+        while($commentArray = $commentsRequest->fetch())
+        {
+            $commentObject = new Comment ;
+            $commentObject->id = $commentArray['id'];
+            $commentObject->author = $commentArray['author'];
+            $commentObject->comment = $commentArray['comment'];
+            $commentObject->signaler = $commentArray['signaler'];
+            $commentObject->creation_date_fr = $commentArray['creation_date_fr'] ;
+            $comments[] = $commentObject;
+        }
 
-	public function signalComment()
+        return $comments;
+    }
+
+	public function signalComment($idComment)
 	{
-		$db = dbConnect();
-    $req = $db->prepare('UPDATE comments SET signaler = 1 WHERE id = ?');
-    $affectedLines = $req->execute(array($idComment)); 
+        $manager = new Manager;
+		$db = $manager->dbConnect();
+        $req = $db->prepare('UPDATE comments SET signaler = 1 WHERE id = ?'); //comments = table ; signaler =  colonne  ; 
+        $affectedLines = $req->execute(array($idComment)); //
 
-    return $affectedLines;
+        return $affectedLines;
 	}
 }

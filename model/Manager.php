@@ -2,7 +2,7 @@
 
 class Manager 
 {
-	protected function dbConnect()
+	public function dbConnect()
 	{ 
 		$db = new PDO('mysql:host=localhost;dbname=projet3;charset=utf8', 'root', '');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -10,15 +10,15 @@ class Manager
         return $db;
 	}
 
-	private	function connexion ($mail,$mdp)
+	public	function connexion ($mail,$mdp)
 	{
-    	$db = dbConnect();
+    	$db = $this->dbConnect();
     	$req = $db->prepare ('SELECT id,pseudo FROM membres WHERE mail = ? AND mdp= ?');
     	$req ->execute(array($mail,$mdp));
     	$membre = $req->fetch();
-    
+    	
     	return $membre ;
-        
-	}
+    }
+
 }
 

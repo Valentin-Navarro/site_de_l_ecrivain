@@ -1,45 +1,62 @@
 <?php
 
-require_once ('model/frontend/model.php');
-require_once ('model/BilletManager.php');
-require_once ('model/CommentManager.php');
+
 
 function addArticle( $title, $content)
-{
-	$affectedLines = postArticle($title, $content);
+{	
+	$etat = array_key_exists('pseudo',$_SESSION);
 
-	if ($affectedLines === false)
-	{
-		die('Erreur d\'ajout de l\'article');
+	if ($etat === true)
+	{	
+		$billetManager = new BilletManager();
+		$affectedLines = $billetManager->postArticle($title, $content);	
+
+		if ($affectedLines === false)
+		{
+			die('Erreur d\'ajout de l\'article');
+		}
+		else 
+		{
+			header('location: index.php?action=listPosts');
+		}	
 	}
 	else 
 	{
-		header('location: index.php?action=listPosts');
+		header('location: index.php?action=connexion');	
 	}	
 
 }
 
 function majArticleControler($idBillet , $title , $content)
 {
-	$affectedLines = majArticleModel($idBillet ,$title , $content);
+	$etat = array_key_exists('pseudo',$_SESSION);
 
-	if ($affectedLines === false)
+	if ($etat === true)
 	{
-		die('Erreur d\'ajout de l\'article');
+		$billetManager = new BilletManager;
+		$affectedLines = $billetManager->majArticleModel($idBillet ,$title , $content);
+
+		if ($affectedLines === false)
+		{
+			die('Erreur d\'ajout de l\'article');
+		}
+		else 
+		{
+			header('location: index.php?action=listPosts');
+		}	
 	}
 	else 
 	{
-		header('location: index.php?action=listPosts');
-	}	
-
+		header('location: index.php?action=connexion');	
+	}		
 }
-
 
 
 function traitementConnexion($mail,$mdp)
 {
+	$manager = new Manager;
 	$mdp = sha1($mdp);
-	$membre = connexion($mail,$mdp);
+	$membre = $manager->connexion($mail,$mdp);
 	
 	if ($membre === false)
 	{
@@ -50,33 +67,12 @@ function traitementConnexion($mail,$mdp)
 		$_SESSION['pseudo'] = $membre['pseudo'] ; 
 		header('location: index.php?action=listPosts');
 	}
-
-
-}
-
-function validInscription($pseudo, $mail, $mdp)
-{
-	$mdp= sha1($mdp);
-	$affectedLines = addMembres($pseudo, $mail, $mdp);
-
-
-	if ($affectedLines === false)
-	{
-		die('Erreur d\'ajout du membre');
-	}
-	else 
-	{
-		header('location: index.php?action=listPosts'); 
-	}	
 }
 
 function deconnexion()
 {
-	if (session_start());
-	{
-		session_destroy();
-		header('location: index.php?action=listPosts'); 
-	}
+	session_destroy();
+	header('location: index.php?action=listPosts'); 	
 }
 
 function formAddArticle()
@@ -94,12 +90,18 @@ function formAddArticle()
 }
 
 function pageAdmin ()
-{
+{	
 	$etat = array_key_exists('pseudo',$_SESSION);
-	$comments = getAllComments();
-	$billets = getPosts();
+
 	if ($etat === true)
 	{	
+		$pseudo = $_SESSION['pseudo'];
+		$commentManager = new CommentManager;
+		$comments = $commentManager->getAllComments();
+		$billetManager = new BilletManager;
+		$billets = $billetManager->getPosts();
+		
+
 		require ('views/backend/pageAdmin.php');
 	}
 	else 
@@ -107,23 +109,35 @@ function pageAdmin ()
 		header('location: index.php?action=connexion');
 	}
 
-
 }
 
 function deleteCommentControler($idComment)
 {
-	$suppComment = deleteCommentModel($idComment) ;
+	$etat = array_key_exists('pseudo',$_SESSION);
 
-	header ('location:index.php?action=pageAdmin');
+	if ($etat === true)
+	{	
+		$commentManager = new CommentManager;
+		$suppComment = $commentManager->deleteCommentModel($idComment) ;
+
+		header ('location:index.php?action=pageAdmin');
+	}
+	else 
+	{
+		header('location: index.php?action=connexion');
+	}	
 }
 
 function formEditionArticle ($idBillet)
-{
+{	
+
 	$etat = array_key_exists('pseudo',$_SESSION);
-	$billet = getPost($idBillet);
 
 	if ($etat === true)
 	{
+		$billetManager = new BilletManager;
+		$billet = $billetManager ->getPost($idBillet);
+
 		require ('views/backend/editionArticle.php');
     }
     else
@@ -134,9 +148,19 @@ function formEditionArticle ($idBillet)
 
 function deleteArticleControler ($idBillet)
 {
-	$suppArticle = deleteArticleModel($idBillet) ; 
+	$etat = array_key_exists('pseudo',$_SESSION);
 
-	header ('location:index.php?action=pageAdmin');
+	if ($etat === true)
+	{
+		$billetManager = new BilletManager;
+		$suppArticle = $billetManager->deleteArticleModel($idBillet) ; 
+
+		header ('location:index.php?action=pageAdmin');
+	}
+	else
+	{
+    	header('location: index.php?action=connexion');
+    }	
 }
 
 ?>
