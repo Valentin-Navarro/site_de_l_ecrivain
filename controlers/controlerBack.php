@@ -152,8 +152,11 @@ function deleteArticleControler ($idBillet)
 
 	if ($etat === true)
 	{
+		$commentManager = new CommentManager;
+		$suppAllComments = $commentManager->supprimeCommentBillet($idBillet);
 		$billetManager = new BilletManager;
-		$suppArticle = $billetManager->deleteArticleModel($idBillet) ; 
+		$suppArticle = $billetManager->deleteArticleModel($idBillet); 
+		
 
 		header ('location:index.php?action=pageAdmin');
 	}

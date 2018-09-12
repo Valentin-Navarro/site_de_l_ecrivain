@@ -14,7 +14,7 @@ class Manager
 	{
     	$db = $this->dbConnect();
     	$req = $db->prepare ('SELECT id,pseudo FROM membres WHERE mail = ? AND mdp= ?');
-    	$req ->execute(array($mail,$mdp));
+    	$req ->execute([$mail,$mdp]);
     	$membre = $req->fetch();
     	
     	return $membre ;

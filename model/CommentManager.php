@@ -7,8 +7,8 @@ class CommentManager
 	{
         $manager = new Manager;
 		$db = $manager-> dbConnect();
-        $commentsRequest = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC LIMIT 0,10');
-        $commentsRequest->execute(array($idBillet));
+        $commentsRequest = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC');
+        $commentsRequest->execute([$idBillet]);
         $comments =[] ; 
         while($commentArray = $commentsRequest->fetch())
         {
@@ -27,28 +27,19 @@ class CommentManager
 	{
         $manager = new Manager;
 		$db = $manager->dbConnect();
-        $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,approuve,signaler) VALUES (?,?,?, NOW(),0,0)');
-        $affectedLines = $comments -> execute (array ($idBillet, $author, $comment));
+        $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,signaler) VALUES (?,?,?, NOW(),0)');
+        $affectedLines = $comments -> execute ([$idBillet, $author, $comment]);
 
         return $affectedLines;
 
 	}
 
-	public function approveCommentModel($approuve)
-	{
-		$db = dbConnect();
-        $req = $db->prepare('UPDATE comments SET approuve = 1 WHERE id = ?');
-        $affectedLines = $req->execute(array($approuve)); 
-
-        return $affectedLines;
-	}
-
-	public function deleteCommentModel($supprime)
+	public function deleteCommentModel($idComment) 
 	{
         $manager = new Manager;
 		$db = $manager->dbConnect();
         $req = $db->prepare('DELETE FROM comments WHERE id = ?');
-        $affectedLines = $req->execute(array($supprime));
+        $affectedLines = $req->execute([$idComment]);
 
         return $affectedLines;
 	}
@@ -57,8 +48,8 @@ class CommentManager
 	{
         $manager = new Manager;
         $db = $manager->dbConnect();
-        $commentsRequest = $db->prepare('SELECT id,approuve, author, comment, signaler, DATE_FORMAT(creation_date,\'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments ORDER BY creation_date DESC');
-        $commentsRequest->execute(array());
+        $commentsRequest = $db->prepare('SELECT id, author, comment, signaler, DATE_FORMAT(creation_date,\'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments ORDER BY creation_date DESC');
+        $commentsRequest->execute([]);
         $comments =[] ; 
 
         while($commentArray = $commentsRequest->fetch())
@@ -80,8 +71,19 @@ class CommentManager
         $manager = new Manager;
 		$db = $manager->dbConnect();
         $req = $db->prepare('UPDATE comments SET signaler = 1 WHERE id = ?'); //comments = table ; signaler =  colonne  ; 
-        $affectedLines = $req->execute(array($idComment)); //
+        $affectedLines = $req->execute([$idComment]); //
 
         return $affectedLines;
 	}
+
+    public function supprimeCommentBillet($idBillet)
+    {
+        $manager = new Manager;
+        $db = $manager->dbConnect();
+        $req = $db->prepare('DELETE FROM comments WHERE post_id = ?');
+        $affectedLines = $req->execute([$idBillet]);
+
+        return $affectedLines;
+
+    }
 }

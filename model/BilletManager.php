@@ -31,7 +31,7 @@ class BilletManager // le billet manager est là pour creer et supprimer les bil
         $manager = new Manager;
 		$db = $manager-> dbConnect();
         $req = $db->prepare('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM billets WHERE id = ?');
-        $req->execute(array($idBillet));
+        $req->execute([$idBillet]);
         $post = $req->fetch();
         $billet = new Billet ;
         $billet->id = $idBillet;
@@ -47,7 +47,7 @@ class BilletManager // le billet manager est là pour creer et supprimer les bil
         $manager = new Manager;
 		$db = $manager->dbConnect();
         $article = $db->prepare('INSERT INTO billets (title,content,creation_date) VALUES (?,?, NOW())');
-        $affectedLines = $article -> execute (array($title, $content));
+        $affectedLines = $article -> execute ([$title, $content]);
 
         return $affectedLines;
 	}
@@ -67,7 +67,7 @@ class BilletManager // le billet manager est là pour creer et supprimer les bil
         $manager = new Manager;
 		$db = $manager->dbConnect();
         $req = $db->prepare('DELETE FROM billets WHERE id = ?');
-        $affectedLines = $req->execute(array($supprime));
+        $affectedLines = $req->execute([$supprime]);
 
         return $affectedLines; 
 	}
