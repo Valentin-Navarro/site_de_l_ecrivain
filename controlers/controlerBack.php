@@ -135,6 +135,7 @@ function formEditionArticle ($idBillet)
 
 	if ($etat === true)
 	{
+		$pseudo = $_SESSION['pseudo'];
 		$billetManager = new BilletManager;
 		$billet = $billetManager ->getPost($idBillet);
 

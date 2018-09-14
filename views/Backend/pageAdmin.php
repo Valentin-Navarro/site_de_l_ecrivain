@@ -10,7 +10,7 @@
 <ul>
 	<?php foreach ($comments as $comment ) { ?>
 		<li>
-			<?= $comment->id ?> : <?= $comment->author?> : <?= $comment->comment ?>
+			<?= htmlspecialchars($comment->id) ?> : <?= htmlspecialchars($comment->author)?> : <?= htmlspecialchars( $comment->comment) ?>
 			<?php if ($comment->signaler == 1 ) { ?> 
 				Commentaire signalé 
 			<?php } ?> 
@@ -24,7 +24,7 @@
 <ul>
 	<?php foreach ($billets as $billet) { ?>
 		<li>
-			<?= $billet->id ?> : <?= $billet->title ?> 
+			<?= htmlspecialchars($billet->id) ?> : <?= htmlspecialchars($billet->title )?> 
 			- <a href="index.php?action=editionArticle&id=<?= $billet->id ?>">Modifier l'article</a>
 			<a href="index.php?action=deleteArticle&id=<?= $billet->id ?>">Supprimer l'article</a>
 		</li>
