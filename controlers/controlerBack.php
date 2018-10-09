@@ -8,7 +8,9 @@ function addArticle( $title, $content)
 
 	if ($etat === true)
 	{	
-		$billetManager = new BilletManager();
+		$manager = new Manager;
+		$db = $manager->dbConnect();
+		$billetManager = new BilletManager($db);
 		$affectedLines = $billetManager->postArticle($title, $content);	
 
 		if ($affectedLines === false)
@@ -33,7 +35,9 @@ function majArticleControler($idBillet , $title , $content)
 
 	if ($etat === true)
 	{
-		$billetManager = new BilletManager;
+		$manager = new Manager;
+		$db = $manager->dbConnect();
+		$billetManager = new BilletManager($db);
 		$affectedLines = $billetManager->majArticleModel($idBillet ,$title , $content);
 
 		if ($affectedLines === false)
@@ -55,8 +59,9 @@ function majArticleControler($idBillet , $title , $content)
 function traitementConnexion($mail,$mdp)
 {
 	$manager = new Manager;
-	$mdp = sha1($mdp);
-	$membre = $manager->connexion($mail,$mdp);
+	$db = $manager->dbConnect();
+	$connexionMembres = new ConnexionMembres($db);
+	$membre = $connexionMembres->connexion($mail,$mdp);
 	
 	if ($membre === false)
 	{
@@ -95,10 +100,12 @@ function pageAdmin ()
 
 	if ($etat === true)
 	{	
+		$manager = new Manager;
 		$pseudo = $_SESSION['pseudo'];
-		$commentManager = new CommentManager;
+		$db = $manager->dbConnect();
+		$commentManager = new CommentManager($db);
 		$comments = $commentManager->getAllComments();
-		$billetManager = new BilletManager;
+		$billetManager = new BilletManager($db);
 		$billets = $billetManager->getPosts();
 		
 
@@ -117,7 +124,9 @@ function deleteCommentControler($idComment)
 
 	if ($etat === true)
 	{	
-		$commentManager = new CommentManager;
+		$manager = new Manager;
+		$db = $manager->dbConnect();
+		$commentManager = new CommentManager($db);
 		$suppComment = $commentManager->deleteCommentModel($idComment) ;
 
 		header ('location:index.php?action=pageAdmin');
@@ -134,9 +143,11 @@ function formEditionArticle ($idBillet)
 	$etat = array_key_exists('pseudo',$_SESSION);
 
 	if ($etat === true)
-	{
+	{	
 		$pseudo = $_SESSION['pseudo'];
-		$billetManager = new BilletManager;
+		$manager = new Manager;
+		$db = $manager->dbConnect();
+		$billetManager = new BilletManager($db);
 		$billet = $billetManager ->getPost($idBillet);
 
 		require ('views/backend/editionArticle.php');
@@ -152,10 +163,12 @@ function deleteArticleControler ($idBillet)
 	$etat = array_key_exists('pseudo',$_SESSION);
 
 	if ($etat === true)
-	{
-		$commentManager = new CommentManager;
+	{	
+		$manager = new Manager;
+		$db = $manager->dbConnect();
+		$commentManager = new CommentManager($db);
 		$suppAllComments = $commentManager->supprimeCommentBillet($idBillet);
-		$billetManager = new BilletManager;
+		$billetManager = new BilletManager($db);
 		$suppArticle = $billetManager->deleteArticleModel($idBillet); 
 		
 

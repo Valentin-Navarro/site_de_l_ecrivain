@@ -3,6 +3,7 @@
 
 function page404()
 {
+    http_response_code(404);
 	require ('views/frontend/erreur_404.php');
 }
 
@@ -13,9 +14,9 @@ function listPosts()
 	{
 		$pseudo = $_SESSION['pseudo'];
 	}
-	
-
-	$billetManager = new BilletManager(); //Création d'un objet 
+	$manager = new Manager;
+	$db = $manager->dbConnect();
+	$billetManager = new BilletManager($db); //Création d'un objet 
 	$posts = $billetManager->getPosts(); // Appel d'une fonction de cet objet 
 
 	require ('views/frontend/listPostsView.php');
@@ -23,8 +24,10 @@ function listPosts()
 
 function post($idBillet)
 {
-	$billetManager = new BilletManager();
-	$commentManager = new CommentManager();
+	$manager = new Manager;
+	$db = $manager->dbConnect();
+	$billetManager = new BilletManager($db);
+	$commentManager = new CommentManager($db);
 
 	$post = $billetManager->getPost($idBillet);
 	$comments = $commentManager->getComments($idBillet);
@@ -36,7 +39,9 @@ function post($idBillet)
 
 function addComment($idBillet,$author,$comment)
 {
-	$commentManager = new CommentManager();
+	$manager = new Manager;
+	$db = $manager->dbConnect();
+	$commentManager = new CommentManager($db);
 
 	$affectedLines = $commentManager->postComment($idBillet, $author, $comment);
 
@@ -46,7 +51,7 @@ function addComment($idBillet,$author,$comment)
 	}
 	else
 	{
-		header ('location: index.php?action=post&id=' . $idBillet);
+		header ('location: index.php?action=post&id=' . $idBillet);    // le . concatene 
 	}	
 }
 
@@ -56,14 +61,11 @@ function connexionForm()
 }
 
 
-function formInscription()
-{
-	require ('views/frontend/inscription.php');
-}
-
 function signalerComment($idComment)
 {
-	$commentManager = new CommentManager();
+	$manager = new Manager;
+	$db = $manager->dbConnect();
+	$commentManager = new CommentManager($db);
 	$alertComment = $commentManager->signalComment($idComment);
 	
 	header ('location: index.php?action=listPosts');

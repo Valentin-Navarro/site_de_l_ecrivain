@@ -10,15 +10,5 @@ class Manager
         return $db;
 	}
 
-	public	function connexion ($mail,$mdp)
-	{
-    	$db = $this->dbConnect();
-    	$req = $db->prepare ('SELECT id,pseudo FROM membres WHERE mail = ? AND mdp= ?');
-    	$req ->execute([$mail,$mdp]);
-    	$membre = $req->fetch();
-    	
-    	return $membre ;
-    }
-
 }
 

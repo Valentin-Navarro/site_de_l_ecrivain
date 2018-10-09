@@ -29,8 +29,8 @@
 <?php foreach ($comments as $commentObject) { ?>
 	<div class="card mb-2">
 		<div class="card-body">
-			<h6 class="card-subtitle mb-2 text-muted"><?= $commentObject->author ?> : </h6>
-			<p class="card-text"><?= $commentObject->comment ?></p>
+			<h6 class="card-subtitle mb-2 text-muted"><?= htmlspecialchars($commentObject->author)?> : </h6>
+			<p class="card-text"><?= htmlspecialchars($commentObject->comment)?></p>
 			<div class= "text-right">
 				<a href="index.php?action=signalComment&id=<?= $commentObject->id ?>" class="card-link text-right">Signaler</a>
 			</div>

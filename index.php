@@ -7,6 +7,7 @@ require ('model/BilletManager.php');
 require ('model/Comment.php');
 require ('model/CommentManager.php');
 require ('model/Manager.php');
+require ('model/ConnexionMembres.php');
 
 if (isset($_GET['action']) == false)
 {
@@ -152,6 +153,5 @@ switch ($_GET['action'])
        page404();
 }
 
-// Mettre en place la suppression d'article , Continuer la supp des superglobales POST "model" 
 
 ?>

@@ -2,12 +2,18 @@
 
 class CommentManager 
 {
+    public $db ; 
 
-	public function getComments($idBillet)
+
+    public function __construct($connexion)
+    {   
+        $this->db = $connexion;
+    }
+
+    public function getComments($idBillet)
 	{
-        $manager = new Manager;
-		$db = $manager-> dbConnect();
-        $commentsRequest = $db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC');
+        
+        $commentsRequest = $this->db->prepare('SELECT id, author, comment, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments WHERE post_id = ? ORDER BY creation_date DESC');
         $commentsRequest->execute([$idBillet]);
         $comments =[] ; 
         while($commentArray = $commentsRequest->fetch())
@@ -25,20 +31,15 @@ class CommentManager
 
 	public function postComment($idBillet,$author,$comment)
 	{
-        $manager = new Manager;
-		$db = $manager->dbConnect();
-        $comments = $db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,signaler) VALUES (?,?,?, NOW(),0)');
+        $comments = $this->db->prepare('INSERT INTO comments (post_id,author,comment,creation_date,signaler) VALUES (?,?,?, NOW(),0)');
         $affectedLines = $comments -> execute ([$idBillet, $author, $comment]);
 
         return $affectedLines;
-
 	}
 
 	public function deleteCommentModel($idComment) 
 	{
-        $manager = new Manager;
-		$db = $manager->dbConnect();
-        $req = $db->prepare('DELETE FROM comments WHERE id = ?');
+        $req = $this->db->prepare('DELETE FROM comments WHERE id = ?');
         $affectedLines = $req->execute([$idComment]);
 
         return $affectedLines;
@@ -46,9 +47,7 @@ class CommentManager
 
 	public function getAllComments() 
 	{
-        $manager = new Manager;
-        $db = $manager->dbConnect();
-        $commentsRequest = $db->prepare('SELECT id, author, comment, signaler, DATE_FORMAT(creation_date,\'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments ORDER BY creation_date DESC');
+        $commentsRequest = $this->db->prepare('SELECT id, author, comment, signaler, DATE_FORMAT(creation_date,\'%d/%m/%Y à %Hh%imin%ss\') AS creation_date_fr FROM comments ORDER BY creation_date DESC');
         $commentsRequest->execute([]);
         $comments =[] ; 
 
@@ -68,9 +67,8 @@ class CommentManager
 
 	public function signalComment($idComment)
 	{
-        $manager = new Manager;
-		$db = $manager->dbConnect();
-        $req = $db->prepare('UPDATE comments SET signaler = 1 WHERE id = ?'); //comments = table ; signaler =  colonne  ; 
+       
+        $req = $this->db->prepare('UPDATE comments SET signaler = 1 WHERE id = ?'); //comments = table ; signaler =  colonne  ; 
         $affectedLines = $req->execute([$idComment]); //
 
         return $affectedLines;
@@ -78,9 +76,7 @@ class CommentManager
 
     public function supprimeCommentBillet($idBillet)
     {
-        $manager = new Manager;
-        $db = $manager->dbConnect();
-        $req = $db->prepare('DELETE FROM comments WHERE post_id = ?');
+        $req = $this->db->prepare('DELETE FROM comments WHERE post_id = ?');
         $affectedLines = $req->execute([$idBillet]);
 
         return $affectedLines;
